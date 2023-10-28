@@ -5,12 +5,18 @@ class Hangman:
         self.num_lives = num_lives
         self.word_list = word_list
         self.list_of_guesses = []
+        self.guess = ""
+        self.word_guessed = list(self.word.replace(self.guess, ""))
+        self.num_letters = len(set(self.word_guessed))   
     
     def check_guess(self, guess):
-        self.guess = guess
         self.guess.lower()
         if self.guess in self.word:
             print (f"Good guess! {self.guess} is in the word")
+            for letter in self.word:
+                if letter == self.guess:
+                    self.word.replace(self.guess, "")
+            self.num_letters -= 1
         else:
             self.num_lives -= 1
             print (f"Sorry, {self.guess} is not in the word. Try again.")   
@@ -21,14 +27,14 @@ class Hangman:
                 self.guess = input("Guess a letter!   ")
                 self.word_guessed = list(self.word.replace(self.guess, ""))
                 self.num_letters = len(set(self.word_guessed))
-                if self.guess.isalpha() == False: 
-                    print ("Invalid letter. Please enter a single alphabetical character")
+                if len(self.guess) >1 or self.guess.isalpha() == False: 
+                    print ("Invalid letter. Please, enter a single alphabetical character")
                 elif self.guess in self.list_of_guesses:
                     print ("You already tried that letter!")
                 else:
                     self.check_guess(self.guess)
                     self.list_of_guesses.append(self.guess)
-                    print(self.list_of_guesses)
+                    
 
 new_game = Hangman(word_list = ["blueberry", "grape", "banana", "raspberry", "nectarine"])
 new_game.ask_for_input()
